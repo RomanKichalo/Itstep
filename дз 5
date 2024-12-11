@@ -1,0 +1,21 @@
+
+import colorama
+from colorama import Fore, Back, Style
+
+
+colorama.init()
+
+
+print(dir(colorama))
+print(dir(Fore))
+print(dir(Back))
+print(dir(Style))
+
+
+print(Fore.RED + "This is red text.")
+print(Back.GREEN + "This is text with a green background.")
+print(Style.BRIGHT + "This is bright text.")
+print(Fore.YELLOW + Back.BLUE + "Yellow text on a blue background.")
+print(Style.RESET_ALL + "This is the default style.")
+
+colorama.deinit()
