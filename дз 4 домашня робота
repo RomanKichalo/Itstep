@@ -1,0 +1,44 @@
+class Vehicle:
+    def __init__(self, brand, model):
+        self.brand = brand
+        self.model = model
+
+    def start(self):
+        print(f"The {self.brand} {self.model} is starting.")
+
+    def stop(self):
+        print(f"The {self.brand} {self.model} is stopping.")
+
+class ElectricVehicle:
+    def __init__(self, battery_capacity):
+        self.battery_capacity = battery_capacity
+
+    def charge(self):
+        print(f"Charging the battery with {self.battery_capacity} kWh capacity.")
+
+    def check_battery_status(self):
+        print(f"Battery capacity: {self.battery_capacity} kWh")
+
+class Car(Vehicle):
+    def __init__(self, brand, model, fuel_type):
+        super().__init__(brand, model)
+        self.fuel_type = fuel_type
+
+    def refuel(self):
+        print(f"Refueling the {self.brand} {self.model} with {self.fuel_type}.")
+
+class ElectricCar(Car, ElectricVehicle):
+    def __init__(self, brand, model, battery_capacity, fuel_type):
+        Vehicle.__init__(self, brand, model)
+        ElectricVehicle.__init__(self, battery_capacity)
+        Car.__init__(self, brand, model, fuel_type)
+
+    def display_info(self):
+        print(f"{self.brand} {self.model} - Battery: {self.battery_capacity} kWh, Fuel Type: {self.fuel_type}")
+
+electric_car = ElectricCar("Tesla", "Model 3", 75, "Electric")
+electric_car.start()
+electric_car.charge()
+electric_car.refuel()
+electric_car.display_info()
+electric_car.stop()
