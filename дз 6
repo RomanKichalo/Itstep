@@ -1,0 +1,35 @@
+result = []
+
+def divider(a, b):
+    try:
+    
+        if not isinstance(a, (int, float)) or not isinstance(b, (int, float)):
+            raise TypeError("Один із аргументів не є числом")
+        
+
+        if a < b:
+            raise ValueError("Число 'a' менше за число 'b'")
+        if b > 100:
+            raise IndexError("Дільник більший за 100")
+        
+     
+        return a / b
+    except (ValueError, IndexError, TypeError, ZeroDivisionError) as e:
+       
+        print(f"Виключення: {e}")
+        return None
+
+
+data = {10: 2, 2: 5, "123": 4, 18: 0, []: 15, 8: 4}
+
+for key in data:
+    try:
+
+        res = divider(key, data[key])
+        if res is not None:
+            result.append(res)
+    except Exception as e:
+        # Ловимо будь-які непередбачувані виключення
+        print(f"Непередбачуване виключення: {e}")
+
+print(result)
