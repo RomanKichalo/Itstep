@@ -1,0 +1,23 @@
+def safe_calculator(func):
+    def wrapper(expression):
+        try:
+            if not isinstance(expression, str):
+                raise TypeError("Вираз повинен бути рядком")
+            if any(keyword in expression for keyword in ["import", "os", "sys", "subprocess", "__", "eval"]):
+                raise ValueError("Небезпечний вираз")
+            return func(expression)
+        except Exception as e:
+            print(f"Помилка: {e}")
+            return None
+    return wrapper
+
+
+@safe_calculator
+def calculate(expression):
+    return eval(expression)
+
+
+print(calculate("2 + 3"))
+print(calculate("10 / 0"))
+print(calculate("import os"))
+print(calculate("5 * (3 + 2)"))
