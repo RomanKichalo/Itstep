@@ -1,0 +1,34 @@
+import time
+from typing import Callable
+
+def measure_execution_time(func: Callable, *args, **kwargs) -> float:
+    """
+    Measures the execution time of a given function.
+
+    Args:
+        func (Callable): The function to measure.
+        *args: Positional arguments to pass to the function.
+        **kwargs: Keyword arguments to pass to the function.
+
+    Returns:
+        float: Execution time in seconds.
+    """
+    start_time = time.perf_counter()
+    func(*args, **kwargs)
+    end_time = time.perf_counter()
+    return end_time - start_time
+
+
+def test_function_1():
+    time.sleep(1)
+
+def test_function_2(x):
+    time.sleep(x)
+
+if __name__ == "__main__":
+    execution_time_1 = measure_execution_time(test_function_1)
+    execution_time_2 = measure_execution_time(test_function_2, 2)
+
+    print(f"Execution time for test_function_1: {execution_time_1:.2f} seconds")
+    print(f"Execution time for test_function_2 with argument 2: {execution_time_2:.2f} seconds")
+
