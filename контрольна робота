@@ -1,0 +1,47 @@
+from flask import Flask, request
+import requests
+from bs4 import BeautifulSoup
+app = Flask(__name__)
+def count_words_on_page(url):
+    try:
+        response = requests.get(url)
+        response.raise_for_status()
+        soup = BeautifulSoup(response.text, "html.parser")
+        text = soup.get_text()
+        words = text.split()
+        return len(words)
+    except requests.exceptions.RequestException:
+        return None
+@app.route("/", methods=["GET", "POST"])
+def search():
+    if request.method == "POST":
+        query = request.form["query"]
+        websites = [
+            ("Wikipedia", "https://en.wikipedia.org/wiki/"),
+            ("Google", "https://www.google.com/search?q="),
+            ("Opera", "https://www.opera.com/search?q="),
+            ("Firefox", "https://www.mozilla.org/search/?q=")]
+
+        results = []
+        for name, base_url in websites:
+            url = base_url + query.replace(" ", "_") if name == "Wikipedia" else base_url + query
+            word_count = count_words_on_page(url)
+            result_item = f"<li><a href='{url}' target='_blank'>{name}</a>"
+            if word_count is not None:
+                result_item += f" - {word_count} слів на сторінці</li>"
+            else:
+                result_item += " - Не вдалося підрахувати слова</li>"
+            results.append(result_item)
+        return f"<h1>Результати:</h1><ul>{''.join(results)}</ul>"
+    return ''' 
+        <form method="POST"> 
+            <input type="text" name="query" placeholder="Введіть запит" required> 
+            <button type="submit">Шукати</button> 
+        </form> 
+    '''
+if __name__ == "__main__":
+    app.run(debug=True)
+
+
+
+
